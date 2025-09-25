@@ -1,0 +1,21 @@
+# LaTeX auxiliary files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+
+# Text files
+*.txt
+
+# Image files (graphs/plots)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+
+# Keep these files:
+# *.ipynb (Jupyter notebooks)
+# *.pdf (PDFs)
+# *.tex (LaTeX source files)
