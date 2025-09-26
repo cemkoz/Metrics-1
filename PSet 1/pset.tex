@@ -35,13 +35,14 @@ While the trials converged to a normal distribution around 0 (as we might have e
 
 \subsection{Part B}
 
-In most cases the difference in means will be the most important statistic to consider when trying to grasp the effects of a treatment. However there may be cases where the mean is not the best measure of central tendency, such as when there are significant outliers in the data, in which case the median may be a more appropriate measure to consider.
+In most cases the difference in means will be the most important statistic to consider when trying to grasp the effects of a treatment. However there may be cases where the mean is not the best measure of central tendency, such as when there are significant outliers in the data, in which case the median may be a more appropriate measure to consider. On the other-hand, one issue which afflicts tests based on medians is 'zero-inflation', where a large number of observations with value zero can mean that the median is likely to be zero for both treatment and control and unlikely to be informative. 
 \newline
 
-I don't think that this example is likely to be one of these cases, given my prior that job training is likely to have fairly uniform effects across the population. However, it certainly won't harm our understanding to compute the difference in medians as a second test statistic.
+
+My prior is that the treatment is likely to have a similar effect for most individuals, and the empirical data is indeed zero-inflated which means that we should be careful when considering the difference-in-medians test statistic as it may not be telling us much about the data.
 \newline
 
-We thus calculate the second test statistic as the difference in medians between the treatment and control groups, described by $T_2$ in formula:
+With these disclaimers, we can go ahead and calculate the second test statistic as the difference in medians between the treatment and control groups, described by $T_2$ in formula:
 
 \[T_2 = \tilde{Y}_T - \tilde{Y}_C\]
 
