@@ -8,7 +8,7 @@
 
 
 \title{\vspace{-4em}Problem Set 1}
-\author{Cem Kozanoglu}
+\author{Cem Kozanoglu \\ Collaborators: Wooyong Park, Roberto Telles-Gonzalez}
 \date{September 2025}
 
 \begin{document}
@@ -25,7 +25,7 @@ The first test statistic we use is the difference in means between the treatment
 
 \[T_1 = \bar{Y}_T - \bar{Y}_C\]
 
-I generated 10,000 simulations of the test statistic under the null hypothesis of no treatment effect. The histogram below shows the distribution of the simulated test statistics, with a red dashed line indicating the observed test statistic from the actual data.
+I generated 100,000 simulations of the test statistic under the null hypothesis of no treatment effect. The histogram below shows the distribution of the simulated test statistics, with a red dashed line indicating the observed test statistic from the actual data.
 
 \vspace*{2em}
 \includegraphics[width=0.8\textwidth]{stat1_graph.png}
@@ -46,7 +46,7 @@ With these disclaimers, we can go ahead and calculate the second test statistic 
 
 \[T_2 = \tilde{Y}_T - \tilde{Y}_C\]
 
-I also calculated this statistic for 10,000 simulations under the null hypothesis of no treatment effect. The histogram below shows the distribution of the simulated test statistics, with a red dashed line indicating the observed test statistic from the actual data.
+I also calculated this statistic for 100,000 simulations under the null hypothesis of no treatment effect. The histogram below shows the distribution of the simulated test statistics, with a red dashed line indicating the observed test statistic from the actual data.
 
 \vspace*{2em}
 \includegraphics[width=0.8\textwidth]{stat2_graph.png}
@@ -68,7 +68,7 @@ where:
 
 \[S^2 = \frac{1}{n-1} \sum_{i=1}^{n} (Y_i - \bar{Y})^2\]
 
-I calculated this statistic for 10,000 simulations under the null hypothesis of no treatment effect. The histogram below shows the distribution of the simulated test statistics, with a red dashed line indicating the observed test statistic from the actual data.
+I calculated this statistic for 100,000 simulations under the null hypothesis of no treatment effect. The histogram below shows the distribution of the simulated test statistics, with a red dashed line indicating the observed test statistic from the actual data.
 
 \vspace*{2em}
 \includegraphics[width=0.8\textwidth]{stat3_graph.png}
@@ -90,9 +90,9 @@ The findings from this random assignment are shown in the table below:
  \hline
  $T_1$ & 0 & 0  \\ [0.5ex]
  \hline
- $T_2$ & 0.015 & 0.0143  \\ [0.5ex]
+ $T_2$ & 0.01641 & 0.01403  \\ [0.5ex]
  \hline
- $T_3$ & 0.0001 & 0.00 \\ [0.5ex] 
+ $T_3$ & 0 & 0.00001 \\ [0.5ex] 
  \hline
 \end{tabular}
 \end{center}
@@ -104,16 +104,26 @@ This type of randomisation would not be ideal in cases with a low sample size, o
 
 \section{Part 2}
 
-Since the treatment and the control groups were assigned randomly, the number of treatment and control variables itself were random, which would not be reflected in our analysis if we chose to randomise our simulations combinatorically by picking 49 observations randomly out of the total 100. It is more reflective of our assignment mechanism if we also randomise our draws for our simulation sample. 
+The choice between combinatoric (fixed count) and random (bernoulli) assignment mechanisms can have meaningful implications for the analysis of experimental data, especially when our sample size is low. The difference between the random and fixed approach depends on the balance in size between the treatment and control groups, as well as the overall size of our sample size. An exposition is presented below:
+\newline
 
-Consider that the two methods end up having different probability distributions. For the combinatoric method:
+We begin with the fact that the variance of our test statistic is proportional to $\frac{1}{n_t} + \frac{1}{n_c}$, where $n_t$ and $n_c$ are the sizes of the treatment and control groups respectively. This means that for a fixed total sample size n, the variance of our test statistic is minimized when $n_t = n_c$.
+\newline
 
-\[P(W) = \binom{100}{49}^{-1} \text{ for } w \text{ s.t. }  \sum_{i=1}^N \mathds{1}_{W_i=1} = 49 \]
+Now if we let $n_t = m$ where m is the actual treatment size, and $f:= n_t/n$, the proportion of treated observations, we can see that the variance of our test statistic is proportional to $\frac{1}{f(1-f)}$. 
+\newline
 
-While for the coin-flip method we get:
+Whereas if we let $n_t$ be a random variable with $n_t \sim Binom(n,p)$, we have our variance proportional to $E\left[\frac{1}{n_t} + \frac{1}{n_c}\right] > \frac{1}{E[n_t]} + \frac{1}{E[n_c]} = \frac{1}{np} + \frac{1}{n(1-p)} = \frac{1}{n p (1-p)}$ according to Jensen's inequality.
+\newline
 
-\[P(W=w) = 2^{-N}, \forall w \in \{0,1\}^N \]
+For large n, this difference between the expected variance and the actual (the first inequality) will be miniscule, so the greater part of the difference derives from whether our random distribution is more balanced (p closer to 0.5) than our fixed distribution (f).
+\newline
 
-If our sample was significantly smaller or our treatment probability was significantly lower, this difference in distribution would likely have a significant effect on our results, and we may prefer to randomise combinatorically.
+In this case $p(1-p)/f(1-f) = 0.5^2/(0.49*0.51) \approx 1.0004$, meaning that our random assignment mechanism has a variance that is only 0.04\% lower than our fixed assignment mechanism, which is negligible.
+\newline
+
+However once we account for the Jensen's inequality term which makes the variance of the random assignment slightly larger, it is in fact likely that our random assignment mechanism has a slightly higher variance overall, yet still by a negligible amount.
+
+To sum up, while the choice between combinatoric and random assignment mechanisms can have meaningful implications for the analysis of experimental data, especially when our sample size is low or our distribution is unbalanced, in this case the difference is negligible either way.
 
 \end{document}
